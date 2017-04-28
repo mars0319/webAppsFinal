@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Condensed:300,400">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app.css">
+    <title>ToDo List</title>
+</head>
+
+<body ng-app="app">
+    <div class="container">
+        <!-- using bootstrap container to hold the entire to do list -->
+
+        <section class="titleMain" ng-controller="ToDoCtrl as ctrl">
+            <h1>My ToDo List <span class="fa fa-pencil"></span></h1>
+        </section>
+
+        <hr>
+
+        <section class="new-todo-form" ng-controller="ToDoCtrl as ctrl">
+            <h2>Add new todo <span class="fa fa-plus-circle"></span></h2>
+            <form ng-submit="ctrl.addToDo(ctrl.newToDo)">
+                <div class="form-group">
+                    <label for="Task">Task</label>
+                    <input type="text" class="form-control" id="Task" required ng-model="ctrl.newToDo.Task">
+                </div>
+                <div class="form-group">
+                    <label for="Where">Where</label>
+                    <input type="text" class="form-control" id="Where" required ng-model="ctrl.newToDo.Where">
+                </div>
+                <div class="form-group">
+                    <label for="location">Comments/Description</label>
+                    <input type="text" class="form-control" id="comments" required ng-model="ctrl.newToDo.comments">
+                </div>
+                <div class="form-group">
+                    <label for="birthday">Due Date</label>
+                    <input type="date" class="form-control" id="birthday" ng-model="ctrl.newToDo.dueDate">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category" ng-model="ctrl.newToDo.category">
+         <option>Work</option>
+         <option>Family</option>
+         <option>Friends</option>
+         <option>Other</option>
+          </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Prioirty Level</label>
+                    <select class="form-control" id="priority" ng-model="ctrl.newToDo.priority">
+         <option>High</option>
+         <option>Medium</option>
+         <option>Low</option>
+          </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+        Add new todo
+      </button>
+            </form>
+        </section>
+
+
+
+        <hr>
+
+        <section class="todo-list" ng-controller="ToDoCtrl as ctrl">
+            <h2>ToDo list<span class="text-muted pull-right"><span class="fa fa-list-ol"></span> {{ctrl.todos.length}}</span>
+            </h2>
+            <!-- fa fa-list-ol is the icon used for an unordered list -->
+            <div class="todo-list-item" ng-repeat="todo in ctrl.todos |orderBy: ['category'] track by todo.$id">
+                <div class="list-item-row">
+                    <input type="text" class="form-control" ng-model="todo.Task">&nbsp;
+                    <input type="text" class="form-control" ng-model="todo.Where">
+                    <input type="text" class="form-control" ng-model="todo.comments">
+                </div>
+                <div class="list-item-row">
+                    <input type="date" class="form-control col-6" ng-model="todo.dueDate">
+                    <select class="form-control" ng-model="todo.category">
+         <option>Work</option>
+         <option>Family</option>
+         <option>Friends</option>
+         <option>Other</option>
+          </select>
+
+
+                    <select class="form-control" ng-class="[{low : todo.priority == 'Low'}, {medium : todo.priority == 'Medium'}, {high : todo.priority == 'High'}]" ng-model="todo.priority">
+         <!-- the ng class is grabbing the assigned css color and applying it to the chosen prioirty level in the list -->
+         
+         <option>High</option>
+         <option>Medium</option>
+         <option>Low</option>
+          </select>
+
+                    <button class="btn btn-outline-primary btn-sm" ng-click="ctrl.complete(todo)">
+          Complete
+        </button>&nbsp;
+
+
+                    <button class="btn btn-outline-danger btn-sm" ng-click="ctrl.remove(todo)">
+          <span class="fa fa-trash"></span>
+        </button>
+                </div>
+            </div>
+
+
+        </section>
+    </div>
+    <!-- Load Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <!-- Load Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
+    <!-- Load AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <!-- Load our app -->
+    <script src="./app.module.js"></script>
+</body>
+</html>
